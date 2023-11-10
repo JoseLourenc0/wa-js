@@ -20,7 +20,9 @@ import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { upsertVotes } from '../../whatsapp/functions';
 import { getMessageById } from '../functions';
 
-webpack.onReady(register);
+webpack.onFullReady(register);
+
+const now = Date.now();
 
 function register() {
   wrapModuleFunction(upsertVotes, async (func, ...args) => {
@@ -28,6 +30,10 @@ function register() {
 
     for (const d of data) {
       try {
+        if (d.senderTimestampMs < now) {
+          continue;
+        }
+
         const msg = await getMessageById(d.parentMsgKey);
         const selectedOptions: any = [];
 

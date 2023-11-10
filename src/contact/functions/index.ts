@@ -15,6 +15,7 @@
  */
 
 export { getBusinessProfile } from './getBusinessProfile';
+export { getCommonGroups } from './getCommonGroups';
 export { getProfilePictureUrl } from './getProfilePictureUrl';
 export { getStatus } from './getStatus';
 export { ContactListOptions, list } from './list';

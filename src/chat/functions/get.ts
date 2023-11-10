@@ -1,5 +1,5 @@
 /*!
- * Copyright 2021 WPPConnect Team
+ * Copyright 2023 WPPConnect Team
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -15,7 +15,7 @@
  */
 
 import { assertWid } from '../../assert';
-import { ChatModel, ChatStore, Wid } from '../../whatsapp';
+import { ChatModel, ChatStore, NewsletterStore, Wid } from '../../whatsapp';
 
 /**
  * Find a chat by id
@@ -24,5 +24,9 @@ import { ChatModel, ChatStore, Wid } from '../../whatsapp';
  */
 export function get(chatId: string | Wid): ChatModel | undefined {
   const wid = assertWid(chatId);
-  return ChatStore.get(wid);
+  if (wid.server === 'newsletter') {
+    return NewsletterStore.get(wid);
+  } else {
+    return ChatStore.get(wid);
+  }
 }

@@ -21,7 +21,9 @@ import { MsgKey } from '../../whatsapp';
 import { wrapModuleFunction } from '../../whatsapp/exportModule';
 import { createOrUpdateReactions } from '../../whatsapp/functions';
 
-webpack.onReady(register);
+webpack.onFullReady(register);
+
+const now = Date.now();
 
 function register() {
   wrapModuleFunction(createOrUpdateReactions, (func, ...args) => {
@@ -29,6 +31,10 @@ function register() {
 
     for (const d of data) {
       try {
+        if (d.timestamp < now) {
+          continue;
+        }
+
         internalEv.emitAsync('chat.new_reaction', {
           id: MsgKey.fromString(d.msgKey),
           orphan: d.orphan,
